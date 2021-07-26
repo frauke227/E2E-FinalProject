@@ -14,3 +14,4 @@ class Config:
         'password': os.environ.get("MONGODB_BLOG_PASSWORD"),
         'host': os.environ.get("MONGODB_DATABASE_BLOG_URI")
     }
+    API_KEY = os.environ.get("GOOGLE_MAPS_API_KEY")

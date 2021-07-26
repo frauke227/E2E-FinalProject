@@ -1,11 +1,18 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField
+from wtforms import StringField, SubmitField, TextAreaField, HiddenField
 from wtforms.validators import DataRequired
 
 
 
 class PostForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
-    content = TextAreaField('Content', validators=[DataRequired()])
-    submit = SubmitField('Post')
+    name = StringField('Name', validators=[DataRequired()])
+    languages = StringField('Spoken Languages', validators=[DataRequired()])
+    specialisation = StringField ('Specialisation', validators=[DataRequired()])
+    adress = TextAreaField('Adress', validators=[DataRequired()])
+    lat = HiddenField("lat")
+    lng = HiddenField("lng")
+    phone = StringField('Phone Number')
+    email = StringField('E-Mail Adress')
+    website = StringField('Website')
+    submit = SubmitField('Create new Profile')
 

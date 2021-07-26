@@ -1,6 +1,8 @@
 from datetime import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
+from mongoengine.fields import IntField
+from wtforms.fields.core import StringField
 from flaskblog import db, login_manager
 from flask_login import UserMixin
 
@@ -17,7 +19,8 @@ class User(db.Document, UserMixin):
     image_file = db.StringField(nullable=False,
                            default='default.jpg')
     password = db.StringField(nullable=False)
-    posts = db.ReferenceField('Post', backref='author')
+    account_type=db.StringField()
+    posts = db.ReferenceField('Profile', backref='author')
 
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
@@ -36,13 +39,30 @@ class User(db.Document, UserMixin):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
 
 
-class Post(db.Document):
+class Profile(db.Document):
     #id = db.Column(db.Integer, primary_key=True)
-    title = db.StringField(nullable=False)
+    name = db.StringField(nullable=False)
     date_posted = db.DateField(nullable=False,
                             default=datetime.utcnow)
-    content = db.StringField(nullable=False)
+    languages = db.StringField(nullable=False)
+    specialisation = db.StringField(nullable=False)
+    adress = db.StringField(nullable=False)
+    location = db.PointField()
+    phone = db.StringField()
+    email = db.EmailField()
+    website = db.StringField()
+    rating = db.ReferenceField('Rating')
     user_id = db.ReferenceField('User')
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
+
+
+class Rating(db.Document):
+    rating = db.IntField()
+    comment = db.StringField()
+    user_id = db.ReferenceField('User')
+    profile_id = db.ReferenceField('Profile')
+
+    def __repr__(self):
+        return f"Rating('{self.rating}', '{self.comment}')"

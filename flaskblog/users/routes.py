@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flaskblog import  db, bcrypt 
 from flaskblog.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm)
-from flaskblog.models import User, Post
+from flaskblog.models import User, Profile
 from flask_login import login_user, current_user, logout_user, login_required
 from flaskblog.users.utils import save_picture, send_reset_email
 
@@ -76,7 +76,7 @@ def user_posts(username):
     user = User.objects(username=username).first_or_404()
    # posts = Post.objects(author=user).order_by(
         #Post.date_posted.desc()).paginate(page=page, per_page=5)
-    posts = Post.objects(user_id=user)
+    posts = Profile.objects(user_id=user)
     return render_template('user_post.html', posts=posts, user=user)
 
 @users.route("/reset_password", methods=['GET', 'POST'])

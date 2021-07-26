@@ -1,4 +1,17 @@
-{% extends "layout.html" %}
-{% block content %}
-    <h1>About Page</h1>
+{% extends "layout.html" %} {% block content %}
+<!--Java Script-->
+<script type=text/javascript src="{{ url_for('static', filename='script.js') }}"></script>
+
+<div id="floating-panel">
+  <input id="address" type="textbox" value="Berlin, Germany" />
+  <input id="submit" type="button" value="Set Marker" />
+</div>
+
+<div id="map"></div>
+
+    <!-- Maps API-->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key={{map_key}}&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>
 {% endblock content %}

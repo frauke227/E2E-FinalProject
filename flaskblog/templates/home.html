@@ -5,6 +5,7 @@
     src="{{ url_for('static', filename='profile_pics/' + post.user_id.image_file) }}"
   />
   <div class="media-body">
+    <!--
     <div class="article-metadata">
       <a
         class="mr-2"
@@ -14,15 +15,20 @@
       <small class="text-muted"
         >{{ post.date_posted.strftime('%d.%m.%Y') }}</small
       >
-    </div>
+    </div>-->
     <h2>
       <a
         class="article-title"
         href="{{ url_for('posts.post', post_id=post.id) }}"
-        >{{ post.title }}</a
+        >{{ post.name }}</a
       >
     </h2>
-    <p class="article-content">{{ post.content }}</p>
+    <p class="article-content">{{ post.languages }}</p>
+    <p class="article-content">{{ post.specialisation }}</p>
+    <p class="article-content">{{ post.adress}}</p>
+    <p class="article-content">{{ post.phone }}</p>
+    <p class="article-content">{{ post.email }}</p>
+    <p class="article-content">{{ post.website }}</p>
   </div>
 </article>
 {% endfor %} {% endblock content%}
