@@ -1,0 +1,124 @@
+# Query: address
+# ContextLines: 1
+
+53 results - 8 files
+
+flaskblog/models.py:
+  48      specialisation = db.StringField(nullable=False)
+  49:     address = db.StringField(nullable=False)
+  50      location = db.PointField()
+
+  59  
+  60: class Address(db.Document):
+  61      name = db.StringField(nullable=False)
+  62:     address = db.StringField(nullable=False)
+  63      location = db.PointField()
+
+  66      def __repr__(self):
+  67:         return f"Post('{self.name}', '{self.address}')"
+  68  
+
+flaskblog/main/routes.py:
+   4  from flaskblog import db
+   5: from flaskblog.posts.forms import PostForm, AddressForm
+   6: from flaskblog.models import Address, Profile
+   7  
+
+  22  
+  23: @main.route("/address", methods=['GET', 'POST'])
+  24  @login_required
+  25: def new_address():
+  26:     form=AddressForm()
+  27      if form.validate_on_submit():
+  28:         address=Address(name=form.name.data, user_id=current_user)
+  29:         address.address=form.address.data, 
+  30:         address.location=[float(form.lng.data), float(form.lat.data)]
+  31:         address.save()
+  32:         flash('Your address have been saved', 'success')
+  33          return redirect(url_for('main.home'))
+  34:     return render_template('create_address.html', form=form, title='NewAddress', map_key=current_app.config["API_KEY"])
+
+flaskblog/posts/forms.py:
+  10      specialisation = StringField ('Specialisation', validators=[DataRequired()])
+  11:     address = StringField('Adress', validators=[DataRequired()])
+  12      lat = HiddenField('lat')
+
+  19    
+  20: class AddressForm(FlaskForm):
+  21      name = StringField('Name', validators=[DataRequired()])
+  22:     address = TextAreaField('Adress', validators=[DataRequired()])
+  23      lat = HiddenField('lat')
+
+flaskblog/posts/routes.py:
+   2  from flaskblog import db
+   3: from flaskblog.posts.forms import PostForm, AddressForm
+   4: from flaskblog.models import Address, Profile
+   5  from flask_login import current_user, login_required
+
+  15          post = Profile(name=form.name.data, languages=form.languages.data, specialisation=form.specialisation.data, 
+  16:                     address=form.address.data, phone=form.phone.data, email=form.email.data, website=form.website.data, user_id=current_user)
+  17          post.location = [float(form.lng.data), float(form.lat.data)]
+
+flaskblog/static/script.js:
+   47    document.getElementById("submit").addEventListener("click", () => {
+   48:     geocodeAddress(geocoder, map);
+   49    });
+
+   66    console.log(place);
+   67:   console.log(place.formatted_address);
+   68    console.log(place.geometry.location.lat());
+
+   72      //User did not select a predicition; reset the input field
+   73:     document.getElementById("autocomplete").placeholder = "Enter your address";
+   74    } else {
+
+   77      document.getElementById("lng").value = place.geometry.location.lng();
+   78:     document.getElementById("address").value = place.formatted_address;
+   79  
+
+  109  
+  110: /*function geocodeAddress(geocoder, resultsMap) {
+  111:     const address = document.getElementById("address").value;
+  112      geocoder
+  113:       .geocode({ address: address })
+  114        .then(({ results }) => {
+
+flaskblog/templates/create_adress.html:
+  24       
+  25: <!--address-->
+  26: <div class="form-group address">
+  27:  {{ form.address.label(class="form-control-label") }} 
+  28:   {% if form.address.errors %} 
+  29:   <div id="addressField">
+  30        <input id="autocomplete"
+  31:       placeholder="Enter your address"
+  32        type="text"
+
+  35    <div class="invalid-feedback">
+  36:             {% for error in form.address.errors %}
+  37                  <span>{{ error }}</span>
+
+  40      {% else %} 
+  41:     <div id="addressField">
+  42          <input id="autocomplete"
+  43:         placeholder="Enter your address"
+  44          type="text"
+
+flaskblog/templates/create_post.html:
+  49        <input class="form-group" id="autocomplete">
+  50:         <!--address-->
+  51:         {{ form.address.label(class="form-control-label") }} {% if
+  52:         form.address.errors %} {{ form.address(class="form-control form-control-lg
+  53          is-invalid")}}
+  54          <div class="invalid-feedback">
+  55:           {% for error in form.address.errors %}
+  56            <span>{{ error }}</span>
+
+  58          </div>
+  59:         {% else %} {{ form.address(class="form-control form-control-lg") }} {%
+  60          endif %}
+
+flaskblog/templates/layout.html:
+  29                  <a class="nav-item nav-link" href="{{ url_for('main.about') }}">Map</a>
+  30:                 <a class="nav-item nav-link" href="{{ url_for('main.new_address') }}">Address</a>
+  31                </div>

@@ -1,0 +1,19 @@
+# Query: adress
+
+9 results - 4 files
+
+flaskblog/main/routes.py:
+  34:     return render_template('create_address.html', form=form, title='NewAdress', map_key=current_app.config["API_KEY"])
+
+flaskblog/posts/forms.py:
+  11:     address = StringField('Address', validators=[DataRequired()])
+  15:     email = StringField('E-Mail Address')
+  22:     address = TextAreaField('Address', validators=[DataRequired()])
+
+flaskblog/templates/create_adress.html:
+  29:   <div id="addressField">
+  41:     <div id="addressField">
+  43:         placeholder="Enter your address"
+
+flaskblog/templates/home.html:
+  28:     <p class="article-content">{{ post.address}}</p>

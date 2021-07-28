@@ -46,7 +46,7 @@ class Profile(db.Document):
                             default=datetime.utcnow)
     languages = db.StringField(nullable=False)
     specialisation = db.StringField(nullable=False)
-    adress = db.StringField(nullable=False)
+    address = db.StringField(nullable=False)
     location = db.PointField()
     phone = db.StringField()
     email = db.EmailField()
@@ -56,6 +56,17 @@ class Profile(db.Document):
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
+
+class Address(db.Document):
+    name = db.StringField(nullable=False)
+    address = db.StringField(nullable=False)
+    location = db.PointField()
+    user_id = db.ReferenceField('User')
+
+    def __repr__(self):
+        return f"Post('{self.name}', '{self.address}')"
+
+
 
 
 class Rating(db.Document):

@@ -1,6 +1,9 @@
-from flask import render_template, request, Blueprint, current_app
+from flask import render_template, request, Blueprint, current_app, flash, url_for, redirect
 from flaskblog.models import Profile
-
+from flask_login import current_user, login_required
+from flaskblog import db
+from flaskblog.posts.forms import PostForm, AddressForm
+from flaskblog.models import Address, Profile
 
 main = Blueprint('main', __name__)
 
@@ -16,3 +19,16 @@ def home():
 @main.route("/map")
 def about():
     return render_template('about.html', map_key=current_app.config["API_KEY"])
+
+@main.route("/address", methods=['GET', 'POST'])
+@login_required
+def new_address():
+    form=AddressForm()
+    if form.validate_on_submit():
+        address=Address(name=form.name.data, user_id=current_user)
+        address.address=form.address.data, 
+        address.location=[float(form.lng.data), float(form.lat.data)]
+        address.save()
+        flash('Your address have been saved', 'success')
+        return redirect(url_for('main.home'))
+    return render_template('create_address.html', form=form, title='NewAddress', map_key=current_app.config["API_KEY"])

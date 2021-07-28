@@ -1,7 +1,7 @@
-from flask import render_template, url_for, flash, redirect, abort, Blueprint
+from flask import render_template, url_for, flash, redirect, abort, Blueprint, current_app
 from flaskblog import db
-from flaskblog.posts.forms import PostForm
-from flaskblog.models import Profile
+from flaskblog.posts.forms import PostForm, AddressForm
+from flaskblog.models import Address, Profile
 from flask_login import current_user, login_required
 
 
@@ -13,11 +13,14 @@ def new_post():
     form = PostForm()
     if form.validate_on_submit():
         post = Profile(name=form.name.data, languages=form.languages.data, specialisation=form.specialisation.data, 
-                    adress=form.adress.data, location=[form.lng.data, form.lat.data], phone=form.phone.data, email=form.email.data, website=form.website.data, user_id=current_user)
+                    address=form.address.data, phone=form.phone.data, email=form.email.data, website=form.website.data, user_id=current_user)
+        post.location = [float(form.lng.data), float(form.lat.data)]
         post.save()
         flash('Your profile has been created!', 'success')
         return redirect(url_for('main.home'))
-    return render_template('create_post.html', title='New Profile', form=form, legend='New Profile')
+    return render_template('create_post.html', title='New Profile', form=form, legend='New Profile', map_key=current_app.config["API_KEY"])
+
+
 
 
 @posts.route("/post/<post_id>")

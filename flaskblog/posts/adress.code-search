@@ -1,0 +1,42 @@
+# Query: adress
+# ContextLines: 1
+
+10 results - 5 files
+
+flaskblog/models.py:
+  48      specialisation = db.StringField(nullable=False)
+  49:     address = db.StringField(nullable=False)
+  50      location = db.PointField()
+
+flaskblog/main/routes.py:
+  33          return redirect(url_for('main.home'))
+  34:     return render_template('create_address.html', form=form, title='NewAdress', map_key=current_app.config["API_KEY"])
+
+flaskblog/posts/forms.py:
+  10      specialisation = StringField ('Specialisation', validators=[DataRequired()])
+  11:     address = StringField('Address', validators=[DataRequired()])
+  12      lat = HiddenField('lat')
+
+  14      phone = StringField('Phone Number')
+  15:     email = StringField('E-Mail Address')
+  16      website = StringField('Website')
+
+  21      name = StringField('Name', validators=[DataRequired()])
+  22:     address = TextAreaField('Address', validators=[DataRequired()])
+  23      lat = HiddenField('lat')
+
+flaskblog/templates/create_adress.html:
+  28    {% if form.address.errors %} 
+  29:   <div id="addressField">
+  30        <input id="autocomplete"
+
+  40      {% else %} 
+  41:     <div id="addressField">
+  42          <input id="autocomplete"
+  43:         placeholder="Enter your address"
+  44          type="text"
+
+flaskblog/templates/home.html:
+  27      <p class="article-content">{{ post.specialisation }}</p>
+  28:     <p class="article-content">{{ post.address}}</p>
+  29      <p class="article-content">{{ post.phone }}</p>
