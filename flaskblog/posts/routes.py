@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, abort, Blueprint, current_app
 from flaskblog import db
-from flaskblog.posts.forms import PostForm, AddressForm
+from flaskblog.posts.forms import PostForm, AddressForm, UpdateForm
 from flaskblog.models import Address, Profile
 from flask_login import current_user, login_required
 
@@ -35,16 +35,27 @@ def update_post(post_id):
     post = Profile.objects.get_or_404(id=post_id)
     if post.user_id != current_user:
         abort(403)
-    form = PostForm()
+    form = UpdateForm()
     if form.validate_on_submit():
         post.name = form.name.data
         post.languages = form.languages.data
+        post.specialisation=form.specialisation.data
+        post.address=form.address.data 
+        post.phone=form.phone.data
+        post.email=form.email.data
+        post.website=form.website.data
+        post.location = [float(form.lng.data), float(form.lat.data)]
         post.save()
         flash('Your profile has been updated!', 'success')
         return redirect(url_for('posts.post', post_id=post.id))
     form.name.data = post.name
     form.languages.data = post.languages
-    return render_template('create_post.html', title='Update Profile', form=form, legend='Update Profile')
+    form.specialisation.data=post.specialisation
+    form.address.data=post.address 
+    form.phone.data=post.phone
+    form.email.data=post.email
+    form.website.data=post.website
+    return render_template('create_post.html', title='Update Profile', form=form, legend='Update Profile', map_key=current_app.config["API_KEY"])
 
 
 @posts.route("/post/<post_id>/delete", methods=['POST'])

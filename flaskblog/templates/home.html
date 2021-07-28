@@ -4,6 +4,7 @@
     class="rounded-circle article-img"
     src="{{ url_for('static', filename='profile_pics/' + post.user_id.image_file) }}"
   />
+
   <div class="media-body">
     <!--
     <div class="article-metadata">
@@ -16,15 +17,15 @@
         >{{ post.date_posted.strftime('%d.%m.%Y') }}</small
       >
     </div>-->
-    <h2>
+    <h4>
       <a
         class="article-title"
         href="{{ url_for('posts.post', post_id=post.id) }}"
         >{{ post.name }}</a
       >
-    </h2>
-    <p class="article-content">{{ post.languages }}</p>
+    </h4>
     <p class="article-content">{{ post.specialisation }}</p>
+    <p class="article-content">Languages spoken: {{ post.languages }}</p>
     <p class="article-content">{{ post.address}}</p>
     <p class="article-content">{{ post.phone }}</p>
     <p class="article-content">{{ post.email }}</p>
