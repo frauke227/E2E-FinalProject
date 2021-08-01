@@ -1,4 +1,7 @@
 {% extends "layout.html" %} {% block content %}
+  <!--Java Script-->
+<script type=text/javascript src="{{ url_for('static', filename='js/script.js') }}"></script>
+
 <article class="media content-section">
   <img
     class="rounded-circle article-img"
@@ -6,14 +9,6 @@
   />
   <div class="media-body">
     <div class="article-metadata">
-      <a
-        class="mr-2"
-        href="{{ url_for('users.user_posts', username=post.user_id.username) }}"
-        >{{ post.user_id.username }}</a
-      >
-      <small class="text-muted"
-        >{{ post.date_posted.strftime('%d.%m.%Y') }}</small
-      >
       {% if post.user_id == current_user %}
       <div>
         <a
@@ -32,8 +27,13 @@
       </div>
       {% endif %}
     </div>
-    <h2 class="article-title">{{ post.title }}</h2>
-    <p class="article-content">{{ post.content }}</p>
+    <h4 class="article-title">{{ post.name }}</h4>
+    <p class="article-content">{{ post.specialisation }}</p>
+    <p class="article-content">Languages spoken: {{ post.languages }}</p>
+    <p class="article-content">{{ post.address}}</p>
+    <p class="article-content">{{ post.phone }}</p>
+    <p class="article-content">{{ post.email }}</p>
+    <p class="article-content">{{ post.website }}</p>
   </div>
 </article>
 
@@ -72,4 +72,11 @@
     </div>
   </div>
 </div>
+<div id="map"></div>
+<!-- Maps API-->
+
+<script
+  src="https://maps.googleapis.com/maps/api/js?key={{map_key}}&libraries=places&callback=initAutocomplete"
+  async
+></script>
 {% endblock content%}

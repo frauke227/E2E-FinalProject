@@ -12,13 +12,14 @@ main = Blueprint('main', __name__)
 def home():
     page = request.args.get('page', 1, type=int)
     #posts = Post.objects.order_by(        Post.date_posted.desc()).paginate(page=page, per_page=5)
-    posts = Profile.objects.all()
+    posts = Profile.objects().order_by('name')
     return render_template('home.html', posts=posts)
 
 
 @main.route("/map")
-def about():
-    return render_template('about.html', map_key=current_app.config["API_KEY"])
+def map():
+    posts = Profile.objects.all()
+    return render_template('map.html', posts=posts, map_key=current_app.config["API_KEY"])
 
 @main.route("/address", methods=['GET', 'POST'])
 @login_required

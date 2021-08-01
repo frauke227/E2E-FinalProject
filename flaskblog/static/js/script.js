@@ -9,10 +9,6 @@ function initAutocomplete() {
     { types: ["geocode"] }
   );
 
-  autocomplete.addListener("place_changed", onPlaceChanged);
-  let mylat = parseFloat(document.getElementById("lat").value);
-  let mylng = parseFloat(document.getElementById("lng").value);
-
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: 14,
     center: { lat: 52.520008, lng: 13.404954 },
@@ -22,6 +18,10 @@ function initAutocomplete() {
     rotateControl: false,
     fullscreenControl: false,
   });
+
+  autocomplete.addListener("place_changed", onPlaceChanged);
+  let mylat = parseFloat(document.getElementById("lat").value);
+  let mylng = parseFloat(document.getElementById("lng").value);
 
   map.setCenter({ lat: mylat, lng: mylng });
   var marker = new google.maps.Marker({
