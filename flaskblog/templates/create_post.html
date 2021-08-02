@@ -53,7 +53,7 @@
         <div id="addressField">
       <input id="autocomplete"
       type="text"
-      class="form-control form-control-lg is-invalid" {{form.address}}/>
+      class="form-control form-control-lg is-invalid"/>
   </div>
           
         <div class="invalid-feedback">
@@ -64,8 +64,9 @@
         {% else %} 
         <div id="addressField">
         <input id="autocomplete" type="text"
+         placeholder="Enter your address"
         class="form-control form-control-lg"
-         {{form.address}} />   
+        value="{{form.address.data}}"/>   
     </div>
           <!-- -->
         {% endif %}

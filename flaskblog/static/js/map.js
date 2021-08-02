@@ -35,7 +35,7 @@ function initMap() {
 
     google.maps.event.addListener(
       marker,
-      "click",
+      "mouseover",
       (function (marker, i) {
         return function () {
           infowindow.setContent(locations2[i][0]);

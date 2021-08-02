@@ -44,7 +44,7 @@ class Profile(db.Document):
     name = db.StringField(nullable=False)
     date_posted = db.DateField(nullable=False,
                             default=datetime.utcnow)
-    languages = db.StringField(nullable=False)
+    languages = db.ListField(default=[])
     specialisation = db.StringField(nullable=False)
     address = db.StringField(nullable=False)
     location = db.PointField()
@@ -53,9 +53,17 @@ class Profile(db.Document):
     website = db.StringField()
     rating = db.ReferenceField('Rating')
     user_id = db.ReferenceField('User')
+    views = db.IntField(default=0)
+    image_file = db.StringField(nullable=False, default='default.jpg')
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
+
+class Language(db.Document):
+    language = db.StringField(unique=True, nullable=False)
+
+    def __repr__(self):
+        return f"Language('{self.language}')"
 
 class Address(db.Document):
     name = db.StringField(nullable=False)

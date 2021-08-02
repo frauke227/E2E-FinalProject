@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, abort, Blueprint, current_app
 from flaskblog import db
-from flaskblog.posts.forms import PostForm, AddressForm, UpdateForm
-from flaskblog.models import Address, Profile
+from flaskblog.posts.forms import PostForm, AddressForm, UpdateForm, LangForm
+from flaskblog.models import Address, Profile, Language
 from flask_login import current_user, login_required
 
 
@@ -11,6 +11,7 @@ posts = Blueprint('posts', __name__)
 @login_required
 def new_post():
     form = PostForm()
+    form.languages.choices = [(c.language.lower(), c.language) for c in Language.objects.order_by("language")]
     if form.validate_on_submit():
         post = Profile(name=form.name.data, languages=form.languages.data, specialisation=form.specialisation.data, 
                     address=form.address.data, phone=form.phone.data, email=form.email.data, website=form.website.data, user_id=current_user)
@@ -69,7 +70,19 @@ def delete_post(post_id):
     return redirect(url_for('main.home'))
 
 
-
+@posts.route("/post/languages", methods=['GET', 'POST'])
+def post_languages():
+    form = LangForm()
+    if form.validate_on_submit():
+        lang = Language(
+            language=form.language.data
+        )
+        lang.save()
+        flash('You language has been saved', 'success')
+        return redirect(url_for('posts.post_languages'))
+    #else:
+        #flash(f'Oh no, there was an error {form.errors}', 'success')
+    return render_template('add_language.html', title="Add Language", form=form, legend="New Language")
 
 
 

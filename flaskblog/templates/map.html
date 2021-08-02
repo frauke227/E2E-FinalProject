@@ -3,7 +3,7 @@
     <script>
         var locations2 = [
             {% for post in posts %}
-        ['<h5>{{post.name}}</h5><hr>{{post.languages | truncate(50, True)}}', {{post.location.coordinates.1}},{{post.location.coordinates.0}}, {{loop.index}} ],
+        ['<h5> {{post.name}}</h5><hr>{{post.languages | truncate(50, True)}}', {{post.location.coordinates.1}},{{post.location.coordinates.0}}, {{loop.index}} ],
             {% endfor %}
         ];
     </script>
